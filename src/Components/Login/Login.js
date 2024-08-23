@@ -35,6 +35,9 @@ const Login = () => {
                     case 'ROLE_ANDN':
                         navigate('/calendar');
                         break;
+                    case 'ROLE_MANAGER':
+                        navigate('/calendar');
+                        break;
                     case 'ROLE_CLIENT':
                         navigate('/client');
                         break;

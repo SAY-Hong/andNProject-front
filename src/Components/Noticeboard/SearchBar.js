@@ -7,8 +7,8 @@ export default function SearchBar({ searchQuery, setSearchQuery, searchCriteria,
     const [placeholder, setPlaceholder] = useState('제목 검색');
 
     useEffect(() => {
-        if (searchCriteria === 'title') {
-            setPlaceholder('제목 검색');
+      if (searchCriteria === 'title') {
+        setPlaceholder('제목 검색');
         } else if (searchCriteria === 'author') {
             setPlaceholder('작성자 검색');
         }

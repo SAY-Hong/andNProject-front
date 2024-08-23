@@ -82,7 +82,11 @@ import ClientHeader from './Components/Noticeboard/ClientHeader'
 import PostList from './Components/Noticeboard/PostList';
 import ClientMain from './Components/Noticeboard/ClientMain';
 import PostDetail from './Components/Noticeboard/PostDetail';
+import ManagerMain from './Components/Noticeboard/ManagerMain';
 import ClientPostDetail from './Components/Noticeboard/ClientDetail';
+import PostEditView from './Components/Noticeboard/PostEditView';
+import ClientEditView from './Components/Noticeboard/ClientEditView';
+
 
 function CalendarApp() {
   const [currentMonth, setCurrentMonth] = React.useState(getMonth());
@@ -109,7 +113,7 @@ function CalendarApp() {
 function AppContent() {
   const location = useLocation();
 
-  const showHeader = ['/calendar', '/andn'].includes(location.pathname);
+  const showHeader = ['/calendar', '/andn', '/manager', '/clients'].includes(location.pathname);
   const showClientHeader = ['/client', '/client/posts', '/OutsourcingMain'].includes(location.pathname);
 
   return (
@@ -122,8 +126,10 @@ function AppContent() {
         <Route path="/" element={<Login />} />
         <Route path="/newpost" element={<PostView onPostSaved={() => { }} />} />
         <Route path="/client" element={<ClientMain />} />
+        <Route path="/clients" element={<ClientMain />} />
         <Route path="/register" element={<Register />} />
         <Route path="/andn" element={<Main />} />
+        <Route path="/manager" element={<ManagerMain />} />
         <Route path="/calendar" element={<PrivateRoute><CalendarApp /></PrivateRoute>} />
         <Route path="/client/posts" element={<ClientPostView onClientPostSaved={() => { }} />} />
         <Route path="/OutsourcingMain" element={<PrivateRoute><OutsourcingMain /></PrivateRoute>} />
@@ -132,6 +138,8 @@ function AppContent() {
         <Route path="/andn/posts/:id" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
         <Route path="/client/posts/:id" element={<PrivateRoute><ClientPostDetail /></PrivateRoute>} />
         <Route path="/outsourcing/articles/:id" element={<PrivateRoute><OutsourcingDetail /></PrivateRoute>} />
+        <Route path="/andn/posts/edit" element={<PrivateRoute><PostEditView /></PrivateRoute>} />
+        <Route path="/client/posts/edit" element={<PrivateRoute><ClientEditView /></PrivateRoute>} />
       </Routes>
     </>
   );

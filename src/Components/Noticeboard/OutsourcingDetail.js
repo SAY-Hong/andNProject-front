@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, Typography, Grid, Box, Divider, Container } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOutsourcingDetail } from '../../api'; // API call to fetch article details
+import { getOutsourcingDetail, downloadFile } from '../../api'; // API call to fetch article details
 
 export default function OutsourcingDetail() {
     const { id } = useParams(); // Get the post ID from the URL parameters
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
-    const downloadImage = async (filename) => {
-        const url = process.env.REACT_APP_API_URL + "/api/file/image/download?filename=" + filename;
-        const download = document.createElement('a');
 
-        download.href = url;
-        download.setAttribute('download', filename);
-        download.setAttribute('type', 'application/json');
-        download.click();
-    }
+    const handleDownload = async (fileUrl) => {
+      try {
+          await downloadFile(fileUrl);
+      } catch (error) {
+          console.error('Error downloading file:', error);
+      }
+  };
+
     useEffect(() => {
         // Fetch post details
         getOutsourcingDetail(id)
@@ -83,14 +83,20 @@ export default function OutsourcingDetail() {
                         <Divider />
                         <Box>
                             {post.fileUrls && post.fileUrls.length > 0 ? (
-                                post.fileUrls.map((file, index) => (
-
-                                    < Box key={index} sx={{ mt: 1 }}>
+                                post.fileUrls.map((file, index) => (      
+                                    <Box key={index} sx={{ mt: 1 }}>
                                         <Typography variant="body2">
                                             <strong>파일 {index + 1}:</strong>{' '}
-                                            onclick = {downloadImage}
-                                            <a href={file.url} download target="_blank" rel="noopener noreferrer">
-                                                {file.url.split('/').pop()}
+                                            <a
+                                                href="#"
+                                                onClick={(event) => {
+                                                    event.preventDefault(); 
+                                                    handleDownload(file.url); 
+                                                }}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {decodeURIComponent(file.url.split('/').pop())} {/* 파일명을 디코딩하여 표시 */}
                                             </a>
                                         </Typography>
                                     </Box>

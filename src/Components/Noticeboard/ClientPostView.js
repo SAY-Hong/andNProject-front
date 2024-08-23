@@ -53,11 +53,11 @@ export default function ClientPostView({ onClientPostSaved }) {
             formData.append('boothLayout', boothLayout);
             formData.append('boothManager', boothManager);
             formData.append('boothCallNumber', boothCallNumber);
-            formData.append('installDate', installDate, installDate.toString());
-            formData.append('removeDate', removeDate, removeDate.toString());
+            formData.append('installDate', installDate);
+            formData.append('removeDate', removeDate);
             formData.append('applicant', applicant);
             formData.append('applicantNum', applicantNum);
-            formData.append('collectionDay', collectionDay, collectionDay.toString());
+            formData.append('collectionDay', collectionDay);
             formData.append('collectionLoc', collectionLoc);
             formData.append('memo', memo);
 
@@ -84,12 +84,12 @@ export default function ClientPostView({ onClientPostSaved }) {
         setBoothLayout('');
         setBoothManager('');
         setBoothCallNumber('');
-        setInstallDate(null);
-        setRemoveDate(null);
+        setInstallDate('');
+        setRemoveDate('');
         setSelectedFiles([]);
         setApplicant('');
         setApplicantNum('');
-        setCollectionDay(null);
+        setCollectionDay('');
         setCollectionLoc('');
         setMemo('');
         navigate('/client');
@@ -206,6 +206,7 @@ export default function ClientPostView({ onClientPostSaved }) {
                             dateFormat="yyyy/MM/dd"
                             customInput={<TextField fullWidth label="설치 예정일시" variant="outlined" />}
                             autoComplete="off"
+                            placeholderText="선택하지 않음"
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -216,6 +217,7 @@ export default function ClientPostView({ onClientPostSaved }) {
                             dateFormat="yyyy/MM/dd"
                             customInput={<TextField fullWidth label="철거 예정일시" variant="outlined" />}
                             autoComplete="off"
+                            placeholderText="선택하지 않음"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -282,6 +284,7 @@ export default function ClientPostView({ onClientPostSaved }) {
                             dateFormat="yyyy/MM/dd"
                             customInput={<TextField fullWidth label="보관 일시" variant="outlined" />}
                             autoComplete="off"
+                            placeholderText="선택하지 않음"
                         />
                     </Grid>
                     <Grid item xs={6}>
