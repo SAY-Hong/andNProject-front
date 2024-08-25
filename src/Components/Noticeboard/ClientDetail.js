@@ -27,7 +27,7 @@ export default function ClientPostDetail() {
                     console.log("토큰", typeof currentUserId);
                     console.log("아이디", typeof response.authorId);
 
-                    if (toString(response.authorId) === toString(currentUserId)) {
+                    if (response.authorId == currentUserId) {
                         setIsOwner(true);
                     } else {
                         setIsOwner(false);
@@ -58,6 +58,13 @@ export default function ClientPostDetail() {
         if (!confirmDelete) {
             return; // 사용자가 삭제를 취소한 경우 함수 종료
         }
+        try {
+          await delClientPost(id); // 삭제 API 호출
+          console.log('게시물이 성공적으로 삭제되었습니다');
+          navigate('/client'); // 삭제가 성공적으로 완료된 후 페이지 이동
+          } catch (error) {
+              console.error('게시물 삭제 중 오류 발생:', error);
+          }
       };
 
     if (!post) {
