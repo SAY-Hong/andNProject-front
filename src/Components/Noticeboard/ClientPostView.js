@@ -8,6 +8,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { saveClientPost } from '../../api'; // Assuming saveClientPost is an API function you have set up
+import { jwtDecode } from 'jwt-decode'; // jwt-decode 임포트
+import { getToken } from '../../auth'; // 토큰 가져오는 함수
 
 export default function ClientPostView({ onClientPostSaved }) {
     const [eventName, setEventName] = useState('');
@@ -27,6 +29,22 @@ export default function ClientPostView({ onClientPostSaved }) {
     const [collectionLoc, setCollectionLoc] = useState('');         //확인 요망
     const [memo, setMemo] = useState('');
     const navigate = useNavigate();
+    const [isClient, setIsClient] = useState(true); // 상태와 상태 설정 함수 정의
+
+    useEffect(() => {
+      const token = getToken();
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const currentUserRole = decodedToken.role; // 토큰에서 사용자 ID 추출// 게시물의 작성자 ID와 현재 사용자의 ID 비교
+        console.log("유저 role", currentUserRole);
+        
+        if (currentUserRole === "ROLE_CLIENT") {
+          setIsClient(true);
+        } else {
+          setIsClient(false);
+        }
+      }
+    }, []);
 
     const onDrop = useCallback((acceptedFiles) => {
         setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
@@ -68,8 +86,12 @@ export default function ClientPostView({ onClientPostSaved }) {
             await saveClientPost(formData);
             console.log('게시물이 성공적으로 저장되었습니다');
             onClientPostSaved();
-            navigate('/client');
-
+            
+            if (isClient) {
+              navigate('/client');
+            } else {
+              navigate('/clients');
+            }
         } catch (error) {
             console.error('게시물 저장 중 오류 발생:', error);
         }
