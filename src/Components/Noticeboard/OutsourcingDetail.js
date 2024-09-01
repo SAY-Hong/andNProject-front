@@ -71,12 +71,18 @@ export default function OutsourcingDetail() {
                             <Typography variant="body2">{post.content}</Typography>
                         </Box>
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Typography variant="h6">외주업체 정보</Typography>
                         <Divider />
                     </Grid>
-                    {/* <Grid item xs={12}>
-                        <Typography variant="body1"><strong>외주업체:</strong> {post.outsourcingName}</Typography>
+                    <Grid item xs={12}>
+                        <Typography variant="body1">
+                            <strong>외주업체:</strong> {post.outsourcingUsers.length > 0 ? (
+                                  post.outsourcingUsers
+                                      .map(option => option.outsourcingName)  // 모든 선택된 외주업체의 이름을 추출
+                                      .join(', ')  // 콤마로 이름들을 연결
+                              ) : '선택된 외주업체가 없습니다.'}
+                        </Typography>
                     </Grid> */}
                     <Grid item xs={12}>
                         <Typography variant="h6">첨부 파일</Typography>

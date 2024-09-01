@@ -176,11 +176,11 @@ export default function ClientPostDetail() {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body1">
-                            <strong>보관 일시:</strong> {post.collectionDay ? post.collectionDay : "보관 일시가 설정되지 않았습니다."}
+                            <strong>픽업 일시:</strong> {post.collectionDay ? post.collectionDay : "픽업 일시가 설정되지 않았습니다."}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography variant="body1"><strong>수거 장소:</strong> {post.collectionLoc}</Typography>
+                        <Typography variant="body1"><strong>픽업 장소:</strong> {post.collectionLoc}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="h6">메모</Typography>

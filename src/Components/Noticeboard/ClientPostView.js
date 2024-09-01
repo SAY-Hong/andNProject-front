@@ -304,14 +304,14 @@ export default function ClientPostView({ onClientPostSaved }) {
                             selected={collectionDay}
                             onChange={(date) => setCollectionDay(date)}
                             dateFormat="yyyy/MM/dd"
-                            customInput={<TextField fullWidth label="보관 일시" variant="outlined" />}
+                            customInput={<TextField fullWidth label="픽업 일시" variant="outlined" />}
                             autoComplete="off"
                             placeholderText="선택하지 않음"
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            label="수거장소"
+                            label="픽업 장소"
                             variant="outlined"
                             fullWidth
                             value={collectionLoc}
