@@ -35,6 +35,7 @@ function ClientMain() {
                   }));
                     setPosts(formattedData);
                 } 
+                
                 if (currentUserRole == "ROLE_ANDN" || "ROLE_MANAGER") {
                   const data = await getClientsArticles();
 

@@ -4,10 +4,12 @@ import { useDropzone } from 'react-dropzone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DatePicker from 'react-datepicker';
+import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { saveClientPost } from '../../api'; // Assuming saveClientPost is an API function you have set up
+import CustomToggle from './CustomToggle';
 import { jwtDecode } from 'jwt-decode'; // jwt-decode 임포트
 import { getToken } from '../../auth'; // 토큰 가져오는 함수
 
@@ -30,6 +32,11 @@ export default function ClientPostView({ onClientPostSaved }) {
     const [memo, setMemo] = useState('');
     const navigate = useNavigate();
     const [isClient, setIsClient] = useState(true); // 상태와 상태 설정 함수 정의
+    const [isToggled, setIsToggled] = useState(false);
+
+    const handleToggle = () => {
+      setIsToggled(!isToggled);
+    }
 
     useEffect(() => {
       const token = getToken();
@@ -71,14 +78,26 @@ export default function ClientPostView({ onClientPostSaved }) {
             formData.append('boothLayout', boothLayout);
             formData.append('boothManager', boothManager);
             formData.append('boothCallNumber', boothCallNumber);
-            formData.append('installDate', installDate);
-            formData.append('removeDate', removeDate);
             formData.append('applicant', applicant);
             formData.append('applicantNum', applicantNum);
             formData.append('collectionDay', collectionDay);
             formData.append('collectionLoc', collectionLoc);
             formData.append('memo', memo);
 
+            if (installDate) {
+                const formattedInstallDate = [
+                  format(new Date(installDate), 'yyyy-MM-dd')
+                ];
+              formData.append('installDate', formattedInstallDate);
+            }
+
+            if (removeDate) {
+                const formattedInstallDate = [
+                  format(new Date(removeDate), 'yyyy-MM-dd')
+                ];
+              formData.append('removeDate', formattedInstallDate);
+            }
+          
             selectedFiles.forEach(file => {
                 formData.append('files', file);
             });
@@ -135,8 +154,8 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={eventName}
                             onChange={(e) => setEventName(e.target.value)}
-                            required
                             autoComplete="off"
+                            required
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -146,7 +165,6 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
@@ -157,7 +175,6 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={manager}
                             onChange={(e) => setManager(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
@@ -168,7 +185,6 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={callNumber}
                             onChange={(e) => setCallNumber(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
@@ -179,21 +195,19 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    {/* <Grid item xs={6}>
                         <TextField
                             label="부스 배치도"
                             variant="outlined"
                             fullWidth
                             value={boothLayout}
                             onChange={(e) => setBoothLayout(e.target.value)}
-                            required
                             autoComplete="off"
                         />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Typography variant="h6">부스 담당자</Typography>
                         <Divider />
@@ -205,7 +219,6 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={boothManager}
                             onChange={(e) => setBoothManager(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
@@ -216,7 +229,6 @@ export default function ClientPostView({ onClientPostSaved }) {
                             fullWidth
                             value={boothCallNumber}
                             onChange={(e) => setBoothCallNumber(e.target.value)}
-                            required
                             autoComplete="off"
                         />
                     </Grid>
@@ -243,7 +255,7 @@ export default function ClientPostView({ onClientPostSaved }) {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6">그래픽 신청 내역</Typography>
+                        <Typography variant="h6">파일 첨부</Typography>
                         <Divider />
                     </Grid>
                     <Grid item xs={12}>
@@ -273,65 +285,73 @@ export default function ClientPostView({ onClientPostSaved }) {
                         )}
                     </Grid>
                     <Grid item xs={12}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ paddingBottom: '16px' }} >
                         <Typography variant="h6">물품 픽업</Typography>
+                        <CustomToggle isOn={isToggled}
+                                handleToggle={handleToggle}
+
+                            />
+                        </Box>
                         <Divider />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="신청인"
-                            variant="outlined"
-                            fullWidth
-                            value={applicant}
-                            onChange={(e) => setApplicant(e.target.value)}
-                            required
-                            autoComplete="off"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="연락처"
-                            variant="outlined"
-                            fullWidth
-                            value={applicantNum}
-                            onChange={(e) => setApplicantNum(e.target.value)}
-                            required
-                            autoComplete="off"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DatePicker
-                            locale={ko}
-                            selected={collectionDay}
-                            onChange={(date) => setCollectionDay(date)}
-                            dateFormat="yyyy/MM/dd"
-                            customInput={<TextField fullWidth label="픽업 일시" variant="outlined" />}
-                            autoComplete="off"
-                            placeholderText="선택하지 않음"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="픽업 장소"
-                            variant="outlined"
-                            fullWidth
-                            value={collectionLoc}
-                            onChange={(e) => setCollectionLoc(e.target.value)}
-                            required
-                            autoComplete="off"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="메모"
-                            variant="outlined"
-                            fullWidth
-                            value={memo}
-                            onChange={(e) => setMemo(e.target.value)}
-                            multiline
-                            rows={4}
-                            autoComplete="off"
-                        />
-                    </Grid>
+
+                    {isToggled && (
+                        <>
+                      <Grid item xs={6}>
+                          <TextField
+                              label="신청인"
+                              variant="outlined"
+                              fullWidth
+                              value={applicant}
+                              onChange={(e) => setApplicant(e.target.value)}
+                              autoComplete="off"
+                          />
+                      </Grid>
+                      <Grid item xs={6}>
+                          <TextField
+                              label="연락처"
+                              variant="outlined"
+                              fullWidth
+                              value={applicantNum}
+                              onChange={(e) => setApplicantNum(e.target.value)}
+                              autoComplete="off"
+                          />
+                      </Grid>
+                      <Grid item xs={6}>
+                          <DatePicker
+                              locale={ko}
+                              selected={collectionDay}
+                              onChange={(date) => setCollectionDay(date)}
+                              dateFormat="yyyy/MM/dd"
+                              customInput={<TextField fullWidth label="픽업 일시" variant="outlined" />}
+                              autoComplete="off"
+                              placeholderText="선택하지 않음"
+                          />
+                      </Grid>
+                      <Grid item xs={6}>
+                          <TextField
+                              label="픽업 장소"
+                              variant="outlined"
+                              fullWidth
+                              value={collectionLoc}
+                              onChange={(e) => setCollectionLoc(e.target.value)}
+                              autoComplete="off"
+                          />
+                      </Grid>
+                      <Grid item xs={12}>
+                          <TextField
+                              label="메모"
+                              variant="outlined"
+                              fullWidth
+                              value={memo}
+                              onChange={(e) => setMemo(e.target.value)}
+                              multiline
+                              rows={4}
+                              autoComplete="off"
+                          />
+                      </Grid>
+                      </>
+                    )}
                     <Grid item xs={6}>
                         <Button
                             variant="contained"

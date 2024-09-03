@@ -164,7 +164,6 @@ export default function PostEditView({ onPostSaved }) {
                         fullWidth
                         value={postData.locate}
                         onChange={(e) => setPostData({ ...postData, locate: e.target.value })}
-                        required
                         autoComplete="off"
                     />
                 </Grid>
@@ -175,7 +174,6 @@ export default function PostEditView({ onPostSaved }) {
                         fullWidth
                         value={postData.companyName}
                         onChange={(e) => setPostData({ ...postData, companyName: e.target.value })}
-                        required
                         autoComplete="off"
                     />
                 </Grid>
@@ -186,7 +184,6 @@ export default function PostEditView({ onPostSaved }) {
                         fullWidth
                         value={postData.designer}
                         onChange={(e) => setPostData({ ...postData, designer: e.target.value })}
-                        required
                         autoComplete="off"
                     />
                 </Grid>
@@ -199,7 +196,6 @@ export default function PostEditView({ onPostSaved }) {
                             variant="outlined"
                             value={postData.boothWidth}
                             onChange={(e) => setPostData({ ...postData, boothWidth: e.target.value})}
-                            required
                             sx={{ flex: 1 }}
                             autoComplete="off"
                         />
@@ -209,7 +205,6 @@ export default function PostEditView({ onPostSaved }) {
                             variant="outlined"
                             value={postData.boothHeight}
                             onChange={(e) => setPostData({ ...postData, boothHeight: e.target.value.replace(/[^0-9]/g, '')})}
-                            required
                             sx={{ flex: 1 }}
                             autoComplete="off"
                         />
@@ -266,12 +261,11 @@ export default function PostEditView({ onPostSaved }) {
                         rows={4}
                         value={postData.content}
                         onChange={(e) => setPostData({ ...postData, content: e.target.value })}
-                        required
                         autoComplete="off"
                     />
                 </Grid>
                 <Grid item xs={12}>
-                <FormControl variant="outlined" fullWidth required>
+                <FormControl variant="outlined" fullWidth>
                   <InputLabel>외주업체 선택</InputLabel>
                       <Select
                           multiple
