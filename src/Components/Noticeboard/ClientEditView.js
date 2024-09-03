@@ -14,6 +14,12 @@ import CustomToggle from './CustomToggle';
 
 export default function ClientEditView({ onPostSaved }) {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const [postData, setPostData] = useState(location.state?.postData || null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [filesToDelete, setFilesToDelete] = useState([]);
+
     const [isToggled, setIsToggled] = useState(false);
 
     const handleToggle = () => {
@@ -28,17 +34,6 @@ export default function ClientEditView({ onPostSaved }) {
       }
       return filename; // 접두사가 없는 경우 원래 파일명 반환
     };
-
-    const location = useLocation();
-    const [postData, setPostData] = useState(location.state?.postData || null);
-
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [filesToDelete, setFilesToDelete] = useState([]);
-
-  //   const [outsourcingOptions, setOutsourcingOptions] = useState([]);
-  //   const [selectedOutsourcingId, setSelectedOutsourcingId] = useState(
-  //     postData?.outsourcingUsers?.map(user => user.outsourcingId) || []
-  // );
     
     useEffect(() => {
       if (location.state?.postData) {
@@ -48,6 +43,10 @@ export default function ClientEditView({ onPostSaved }) {
           name: removePrefix(decodeURIComponent(fileUrl.url.split('/').pop())),
           url: fileUrl.url,
         })));
+      }
+
+      if (location.state?.postData.applicant || location.state?.postData.applicantNum || location.state?.postData.collectionDay || location.state?.postData.collectionLoc || location.state?.postData.memo ){
+        setIsToggled(!isToggled);
       }
     }, [location.state]);
 
@@ -88,7 +87,6 @@ export default function ClientEditView({ onPostSaved }) {
             formData.append('manager', postData.manager);
             formData.append('callNumber', postData.callNumber);
             formData.append('location', postData.location);
-            formData.append('boothLayout', postData.boothLayout);
             formData.append('boothManager', postData.boothManager);
             formData.append('boothCallNumber', postData.boothCallNumber);
             formData.append('applicant', postData.applicant);
@@ -277,12 +275,12 @@ export default function ClientEditView({ onPostSaved }) {
                         <Typography variant="h6">물품 픽업</Typography>
                         <CustomToggle isOn={isToggled}
                                 handleToggle={handleToggle}
-
                             />
                         </Box>
                         <Divider />
                   </Grid>
 
+                  {/*TODO: postData - 물품픽업 항목 중, 가져온 내용이 하나라도 있으면 토글 on 상태로 해두는 로직 추가*/} 
                   {isToggled && (
                     <>
                   <Grid item xs={6}>
@@ -311,14 +309,14 @@ export default function ClientEditView({ onPostSaved }) {
                           selected={postData.collectionDay}
                           onChange={(date) =>  setPostData({ ...postData, collectionDay: date })}
                           dateFormat="yyyy/MM/dd"
-                          customInput={<TextField fullWidth label="보관 일시" variant="outlined" />}
+                          customInput={<TextField fullWidth label="픽업 일시" variant="outlined" />}
                           autoComplete="off"
                           placeholderText="선택하지 않음"
                       />
                   </Grid>
                   <Grid item xs={6}>
                       <TextField
-                          label="수거장소"
+                          label="픽업 장소"
                           variant="outlined"
                           fullWidth
                           value={postData.collectionLoc}
