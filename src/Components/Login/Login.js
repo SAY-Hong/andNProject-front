@@ -27,7 +27,7 @@ const Login = () => {
             const response = await signin(userDTO);
 
             // 응답 데이터에서 사용자 승인 여부 가져오기
-            // const acceptanceType = response.acceptance;
+            const acceptanceType = response.acceptance;
 
             // 응답 데이터에서 사용자 타입 가져오기
             const userType = response.role;
@@ -35,57 +35,35 @@ const Login = () => {
             if (userType) {
                 setUser({ userId, userType });
                 console.log("타입", userType);
-                // if (acceptanceType == "Y") {
-                //         // 사용자 타입에 따라 리다이렉트
-                //         switch (userType) {
-                //           case 'ROLE_ANDN':
-                //           case 'ROLE_MANAGER':  // ROLE_MANAGER도 추가
-                //               // 달력 데이터를 먼저 가져오기
-                //               const calendarData = await call('/api/andnCalendar/todo', 'GET');
-                //               dispatchCalEvent({ type: 'set', payload: calendarData });
-                //               console.log("달력 데이터 얼리 패치", calendarData);
-                //               console.log(acceptanceType);
+                if (acceptanceType == "Y") {
+                        // 사용자 타입에 따라 리다이렉트
+                        switch (userType) {
+                          case 'ROLE_ANDN':
+                          case 'ROLE_MANAGER':  // ROLE_MANAGER도 추가
+                              // 달력 데이터를 먼저 가져오기
+                              const calendarData = await call('/api/andnCalendar/todo', 'GET');
+                              dispatchCalEvent({ type: 'set', payload: calendarData });
+                              console.log("달력 데이터 얼리 패치", calendarData);
+                              console.log(acceptanceType);
 
-                //               // 달력 페이지로 리다이렉트
-                //               navigate('/calendar');
-                //               break;
-                //           case 'ROLE_CLIENT':
-                //               navigate('/client');
-                //               break;
+                              // 달력 페이지로 리다이렉트
+                              navigate('/calendar');
+                              break;
+                          case 'ROLE_CLIENT':
+                              navigate('/client');
+                              break;
 
-                //           case 'ROLE_OUTSOURCING':
-                //               navigate('/OutsourcingMain');
-                //               break;
+                          case 'ROLE_OUTSOURCING':
+                              navigate('/OutsourcingMain');
+                              break;
 
-                //           default:
-                //               navigate('/');
-                //         }
-                // } else {
-                //   console.error('응답에서 userType을 찾을 수 없습니다.');
-                //   alert('가입 승인이 완료되지 않았습니다. ');
-                // } 
-                switch (userType) {
-                            case 'ROLE_ANDN':
-                            case 'ROLE_MANAGER':  // ROLE_MANAGER도 추가
-                                // 달력 데이터를 먼저 가져오기
-                                const calendarData = await call('/api/andnCalendar/todo', 'GET');
-                                dispatchCalEvent({ type: 'set', payload: calendarData });
-                                console.log("달력 데이터 얼리 패치", calendarData);
-  
-                                // 달력 페이지로 리다이렉트
-                                navigate('/calendar');
-                                break;
-                            case 'ROLE_CLIENT':
-                                navigate('/client');
-                                break;
-  
-                            case 'ROLE_OUTSOURCING':
-                                navigate('/OutsourcingMain');
-                                break;
-  
-                            default:
-                                navigate('/');
-                          } 
+                          default:
+                              navigate('/');
+                        }
+                } else {
+                  console.error('응답에서 userType을 찾을 수 없습니다.');
+                  alert('가입 승인이 완료되지 않았습니다. ');
+                } 
             } else {
                 console.error('응답에서 userType을 찾을 수 없습니다.');
                 alert('로그인 처리 중 문제가 발생했습니다.');

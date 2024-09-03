@@ -27,7 +27,7 @@ export default function PostDetail() {
                     console.log("토큰", currentUserId);
                     console.log("아이디", response.authorId);
 
-                    if (response.authorId == currentUserId) {
+                    if (response.authorId == currentUserId || decodedToken.role == "ROLE_MANAGER") {
                         setIsOwner(true);
                         console.log("작성자와 로그인 아이디가 같음")
                     } else {

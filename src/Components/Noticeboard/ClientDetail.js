@@ -27,7 +27,7 @@ export default function ClientPostDetail() {
                     console.log("토큰", typeof currentUserId);
                     console.log("아이디", typeof response.authorId);
 
-                    if (response.authorId == currentUserId) {
+                    if (response.authorId == currentUserId || decodedToken.role == "ROLE_MANAGER") {
                         setIsOwner(true);
                     } else {
                         setIsOwner(false);
